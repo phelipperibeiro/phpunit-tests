@@ -1,4 +1,4 @@
-<phpunit colors="true">
+<phpunit colors="true" cacheResult="false">
     <testsuites>
         <testsuite name="testes-de-unidade">
             <directory>tests</directory>

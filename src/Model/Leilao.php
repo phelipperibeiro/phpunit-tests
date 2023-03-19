@@ -6,16 +6,26 @@ class Leilao
 {
     /** @var Lance[] */
     private $lances;
+
     /** @var string */
     private $descricao;
+
     /** @var boolean */
     private $finalizado;
 
-    public function __construct(string $descricao)
+    /** @var \DateTimeInterface */
+    private $dataInicio;
+
+    /** @var int */
+    private $id;
+
+    public function __construct(string $descricao, \DateTimeImmutable $dataInicio = null, int $id = null)
     {
-        $this->lances = [];
-        $this->finalizado = false;
         $this->descricao = $descricao;
+        $this->finalizado = false;
+        $this->lances = [];
+        $this->dataInicio = $dataInicio ?? new \DateTimeImmutable();
+        $this->id = $id;
     }
 
     public function recebeLance(Lance $lance)
@@ -41,6 +51,11 @@ class Leilao
     public function getLances(): array
     {
         return $this->lances;
+    }
+
+    public function recuperarDescricao(): string
+    {
+        return $this->descricao;
     }
 
     public function finaliza(): void
@@ -80,5 +95,23 @@ class Leilao
             0
         );
         return $totalLancesUsuario;
+    }
+
+    public function recuperarDataInicio(): \DateTimeInterface
+    {
+        return $this->dataInicio;
+    }
+
+    public function temMaisDeUmaSemana(): bool
+    {
+        $hoje = new \DateTime();
+        $intervalo = $this->dataInicio->diff($hoje);
+
+        return $intervalo->days > 7;
+    }
+
+    public function recuperarId(): int
+    {
+        return $this->id;
     }
 }
